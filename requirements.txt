@@ -1,3 +1,4 @@
 dhanhq
 pandas
 pandas-ta
+numpy<2.0
