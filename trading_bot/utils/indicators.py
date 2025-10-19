@@ -2,7 +2,7 @@
 
 import pandas as pd
 import pandas_ta as ta
-import numpy as np
+
 def calculate_vwap(df):
     """
     Calculates the Volume Weighted Average Price (VWAP).
@@ -66,37 +66,15 @@ def get_historical_data(dhan, symbol, exchange, instrument_type, from_date, to_d
     # And for intraday:
     # data = dhan.intraday_daily_minute_charts(...)
 
-    # Creating a more realistic sample DataFrame for demonstration purposes.
-    date_rng = pd.date_range(start=from_date, end=to_date, freq='5min')
-
-    # Exclude weekends and non-trading hours (e.g., keep 9:15 to 15:30)
-    market_hours = date_rng.to_series().between_time('09:15', '15:30').index
-    market_days = market_hours[market_hours.dayofweek < 5] # Monday to Friday
-
-    if market_days.empty:
-        return pd.DataFrame()
-
-    data_points = len(market_days)
-
-    # Generate random walk price data
-    price_changes = np.random.randn(data_points) / 100  # Small random changes
-    initial_price = 45000
-    close_prices = initial_price * (1 + price_changes).cumprod()
-
-    # Ensure OHLC are consistent
-    open_prices = close_prices / (1 + (np.random.randn(data_points) / 200))
-    high_prices = np.maximum(open_prices, close_prices) + np.random.rand(data_points) * 20
-    low_prices = np.minimum(open_prices, close_prices) - np.random.rand(data_points) * 20
-
-    volumes = np.random.randint(5000, 20000, size=data_points)
-
+    # Creating a sample DataFrame for demonstration purposes.
+    # The actual data will have columns like 'open', 'high', 'low', 'close', 'volume'.
     data = {
-        'date': market_days,
-        'open': open_prices,
-        'high': high_prices,
-        'low': low_prices,
-        'close': close_prices,
-        'volume': volumes
+        'date': pd.to_datetime(['2023-01-01 09:15:00', '2023-01-01 09:20:00', '2023-01-01 09:25:00', '2023-01-01 09:30:00']),
+        'open': [100, 102, 101, 103],
+        'high': [103, 104, 103, 105],
+        'low': [99, 101, 100, 102],
+        'close': [102, 103, 102, 104],
+        'volume': [1000, 1200, 1100, 1300]
     }
     df = pd.DataFrame(data)
     df.set_index('date', inplace=True)
