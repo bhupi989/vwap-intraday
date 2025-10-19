@@ -1,4 +1,4 @@
-dhanhq==2.0.2
+dhanhq
 pandas==2.3.3
 pandas-ta==0.4.71b0
 numpy==2.2.6
